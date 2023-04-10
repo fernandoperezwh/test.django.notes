@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # local apps
     'src.apps.nts_account',
+    'src.apps.nts_blogs',
 ]
 
 MIDDLEWARE = [
