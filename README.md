@@ -58,7 +58,7 @@ touch .gitignore
 
 Ejecutamos el siguiente comando para agregar al gitignore la instrucción de que ignore la base de datos
 ```bash
-echo "db.sqlite3" >> .gitignore
+echo "src/db.sqlite3" >> .gitignore
 ```
 
 Ahora si agregemos los cambios al proyecto
@@ -67,3 +67,50 @@ Ahora si agregemos los cambios al proyecto
 git add .
 git commit -m "init"
 ```
+
+### Cambiamos el modelo del usuario de django por buenas practicas
+Creamos la aplicación nts_account
+```
+mkdir -p src/apps/nts_account
+
+python manage.py startapp nts_accounts ./src/apps/nts_account
+```
+
+Agregamos la clase del modelo User en el archivo `models.py`. A continuación agregamos la variable que define donde se encuentra nuestra clase
+en el archivo de `src/core/settings.py` del proyecto
+
+```bash
+echo "AUTH_USER_MODEL = 'nts_account.User'" >> src/core/settings.py
+```
+
+A continuación agregamos nuestra aplicación en los `INSTALLED_APPS` que se encuentra en el archivo `src/core/settings.py`
+
+Hacemos migración de este nuevo modelo. Y finalmente aplicamos la migración creada
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+
+
+## Iniciar proyecto
+
+Cree el entorno e instale las dependencias con
+```bash
+poetry install
+```
+
+Realice las migraciones para generar la base de datos
+```bash
+python manage.py migrate
+```
+
+Crea un superusuario con el siguiente comando. Aqui se especifica que el email es `admin@example.com` y la contraseña `temporal1`
+```bash
+export DJANGO_SUPERUSER_EMAIL=admin@example.com
+export DJANGO_SUPERUSER_PASSWORD=temporal1
+
+python manage.py createsuperuser --name admin --noinput
+```
+
